@@ -4,10 +4,12 @@ import org.eclipse.core.runtime.FileLocator
 import org.eclipse.core.runtime.Platform
 import org.jetbrains.kotlin.script.KotlinScriptExternalDependencies
 import org.jetbrains.kotlin.script.ScriptContents
-import org.jetbrains.kotlin.script.ScriptDependenciesResolverEx
+import org.jetbrains.kotlin.script.ScriptDependenciesResolver
 import org.jetbrains.kotlin.script.ScriptTemplateDefinition
 import org.jetbrains.kotlin.script.ScriptTemplateProvider
 import java.io.File
+import java.util.concurrent.Future
+import org.jetbrains.kotlin.script.asFuture
 
 class KtScriptTemplateProvider : ScriptTemplateProvider {
     override val dependenciesClasspath: Iterable<String>
@@ -38,7 +40,7 @@ class KtScriptTemplateProvider : ScriptTemplateProvider {
         resolver = TestKotlinScriptResolver::class,
         scriptFilePattern = ".*\\.my\\.kts"
 )
-open class TestScriptTemplateDefinition(firstParam: String) {
+open class TestScriptTemplateDefinition(val firstParam: String) {
     fun callFromBase(y: Int) {
         println(y)
     }
@@ -48,11 +50,12 @@ fun TestScriptTemplateDefinition.testExtension(x: Int): String {
     return x.toString()
 }
 
-class TestKotlinScriptResolver : ScriptDependenciesResolverEx {
+class TestKotlinScriptResolver : ScriptDependenciesResolver {
     override fun resolve(script: ScriptContents,
                          environment: Map<String, Any?>?,
-                         previousDependencies: KotlinScriptExternalDependencies?): KotlinScriptExternalDependencies? {
-        return TestScriptExternalDependencies
+                         report: (ScriptDependenciesResolver.ReportSeverity, String, ScriptContents.Position?) -> Unit,
+                         previousDependencies: KotlinScriptExternalDependencies?): Future<KotlinScriptExternalDependencies?> {
+        return TestScriptExternalDependencies.asFuture()
     }
 }
 
