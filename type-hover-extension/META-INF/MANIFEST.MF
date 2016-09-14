@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Type-hover-extension
+Bundle-SymbolicName: type-hover-extension;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.kotlin.hover.extension.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.jetbrains.kotlin.ui,
+ org.jetbrains.kotlin.bundled-compiler,
+ org.jetbrains.kotlin.core,
+ org.eclipse.jface.text,
+ org.eclipse.jdt.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
