@@ -6,12 +6,12 @@ import org.jetbrains.kotlin.script.KotlinScriptExternalDependencies
 import org.jetbrains.kotlin.script.ScriptContents
 import org.jetbrains.kotlin.script.ScriptDependenciesResolver
 import org.jetbrains.kotlin.script.ScriptTemplateDefinition
-import org.jetbrains.kotlin.script.ScriptTemplateProvider
+import org.jetbrains.kotlin.script.ScriptTemplatesProvider
+import org.jetbrains.kotlin.script.asFuture
 import java.io.File
 import java.util.concurrent.Future
-import org.jetbrains.kotlin.script.asFuture
 
-class KtScriptTemplateProvider : ScriptTemplateProvider {
+class KtScriptTemplateProvider : ScriptTemplatesProvider {
     override val dependenciesClasspath: Iterable<String>
         get() {
             val pluginBundle = Platform.getBundle(Activator.PLUGIN_ID)
@@ -29,8 +29,8 @@ class KtScriptTemplateProvider : ScriptTemplateProvider {
     override val isValid: Boolean
         get() = true
 
-    override val templateClassName: String
-        get() = "org.jetbrains.kotlin.test.TestScriptTemplateDefinition"
+    override val templateClassNames: Iterable<String>
+        get() = listOf("org.jetbrains.kotlin.test.TestScriptTemplateDefinition")
 
     override val version: Int
         get() = 10
